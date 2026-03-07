@@ -1,14 +1,17 @@
+import { uploadEmoji } from './emoji'
 import { generatePet } from './petpet'
 import app from './slack'
 
 console.log('petpet is starting...')
 
 app.command(/^\/.*petpet$/, async ({ ack, respond, payload }) => {
-  const match = payload.text.match(/^\s*<@([A-Z0-9]+)(?:\|.*)?>\s*$/)
+  const match = payload.text.match(/^\s*<@([A-Z0-9]+)(?:\|.*)?>\s*([a-z0-9-]+)$/)
   if (match) {
     await ack()
 
     const userId = match[1]!
+    const name = match[2]!
+
     const user = await app.client.users.info({ user: userId })
     const pfp =
       user.user?.profile?.image_original ||
@@ -23,17 +26,18 @@ app.command(/^\/.*petpet$/, async ({ ack, respond, payload }) => {
 
     const petpet = await generatePet(image)
 
-    const files = await app.client.filesUploadV2({
-      file: petpet,
-      filename: 'petpet.gif',
-      channel_id: payload.channel_id,
-    })
-    const file = files.files[0]?.files?.[0]
-
-    if (!file) {
-      await respond('Failed to upload petpet image.')
+    const emoji = await uploadEmoji(petpet, name)
+    if (!emoji.ok) {
+      if (emoji.error === 'error_name_taken') {
+        await respond(`:${name}: already exists!`)
+        return
+      }
+      console.error('Failed to upload emoji', emoji)
+      await respond(`Error \`${emoji.error}\` uploading emoji.`)
       return
     }
+
+    await respond(`:${name}: added!`)
 
     return
   }
