@@ -17,3 +17,16 @@ export async function uploadEmoji(image: Buffer, name: string) {
 
   return resp
 }
+
+export async function deleteEmoji(name: string) {
+  const resp = (await fetch('https://hackclub.slack.com/api/emoji.remove', {
+    method: 'POST',
+    body: `token=${SLACK_XOXC_TOKEN}&name=${encodeURIComponent(name)}`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Cookie: `d=${SLACK_XOXD_TOKEN}`,
+    },
+  }).then((r) => r.json())) as any
+
+  return resp
+}

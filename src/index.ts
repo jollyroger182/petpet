@@ -1,11 +1,13 @@
-import { uploadEmoji } from './emoji'
+import { deleteEmoji, uploadEmoji } from './emoji'
 import { generatePet } from './petpet'
 import app from './slack'
 
 console.log('petpet is starting...')
 
 app.command(/^\/.*petpet$/, async ({ ack, respond, payload }) => {
-  const match = payload.text.match(/^\s*<@([A-Z0-9]+)(?:\|.*)?>\s*([a-z0-9-]+)$/)
+  const match = payload.text.match(
+    /^\s*<@([A-Z0-9]+)(?:\|.*)?>\s*([a-z0-9-]+)$/,
+  )
   if (match) {
     await ack()
 
@@ -26,12 +28,20 @@ app.command(/^\/.*petpet$/, async ({ ack, respond, payload }) => {
 
     const petpet = await generatePet(image)
 
-    const emoji = await uploadEmoji(petpet, name)
+    let emoji = await uploadEmoji(petpet, name)
+    if (!emoji.ok && emoji.error === 'error_name_taken') {
+      // try deleting the emoji
+      const del = await deleteEmoji(name)
+      if (del.ok) {
+        emoji = await uploadEmoji(petpet, name)
+      }
+    }
     if (!emoji.ok) {
       if (emoji.error === 'error_name_taken') {
         await respond(`:${name}: already exists!`)
         return
       }
+
       console.error('Failed to upload emoji', emoji)
       await respond(`Error \`${emoji.error}\` uploading emoji.`)
       return
