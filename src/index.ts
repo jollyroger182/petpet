@@ -52,8 +52,9 @@ app.command(/^\/.*petpet$/, async ({ ack, respond, payload }) => {
     return
   }
 
-  console.log(payload.text)
-  await ack('hello world')
+  await ack(
+    `usage: \`/petpet @user emoji-name\` (for example: \`/petpet <@${payload.user_id}> pet-someone\`)`,
+  )
 })
 
 await app.start()
