@@ -13,6 +13,12 @@
         "description": "Create a petpet for a user and adds it as an emoji",
         "usage_hint": "<@user> <emoji-name>",
         "should_escape": true
+      },
+      {
+        "command": "/dev-petpet-delete",
+        "description": "Delete an emoji created by this bot",
+        "usage_hint": "<emoji-name>",
+        "should_escape": false
       }
     ]
   },
