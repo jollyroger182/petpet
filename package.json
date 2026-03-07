@@ -7,12 +7,15 @@
     "dev": "bun --watch --no-clear-screen src/index.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/gifencoder": "^2.0.3"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@slack/bolt": "^4.6.0"
+    "@napi-rs/canvas": "^0.1.96",
+    "@slack/bolt": "^4.6.0",
+    "gifencoder": "^2.0.1"
   }
 }
