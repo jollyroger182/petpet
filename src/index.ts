@@ -69,6 +69,34 @@ app.command(/^\/.*petpet$/, async ({ ack, respond, payload }) => {
   )
 })
 
+app.command(/^\/.*petpet-delete$/, async ({ ack, respond, payload }) => {
+  const match = payload.text.match(/:?([a-z0-9-]+):?/)
+
+  if (!match) {
+    await ack('usage: `/petpet-delete :emoji-name:`')
+    return
+  }
+
+  await ack()
+
+  const name = match[1]!
+
+  const emoji = await DB.getEmoji(name)
+  if (!emoji) {
+    await respond('This emoji is not created by this bot.')
+    return
+  }
+  if (emoji.creator !== payload.user_id) {
+    await respond('This emoji is not created by you.')
+    return
+  }
+
+  await deleteEmoji(name)
+  await DB.deleteEmoji(name)
+
+  await respond(`:${name}: is deleted.`)
+})
+
 await app.start()
 
 console.log('petpet started!')
