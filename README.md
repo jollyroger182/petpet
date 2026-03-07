@@ -1,15 +1,5 @@
 # petpet
 
-To install dependencies:
+A Slack bot that generates petpet emojis.
 
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.3.6. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+Credits to [benisland](https://benisland.neocities.org/petpet/) for making the petpet template.
