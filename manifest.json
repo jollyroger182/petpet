@@ -1,24 +1,24 @@
 {
   "display_information": {
-    "name": "petpet"
+    "name": "petpet (dev)"
   },
   "features": {
     "bot_user": {
-      "display_name": "petpet",
+      "display_name": "petpet (dev)",
       "always_online": false
     },
     "slash_commands": [
       {
         "command": "/dev-petpet",
-        "description": "petpet",
-        "usage_hint": "[user]",
+        "description": "Create a petpet for a user and adds it as an emoji",
+        "usage_hint": "@user pet-emoji-name",
         "should_escape": true
       }
     ]
   },
   "oauth_config": {
     "scopes": {
-      "bot": ["files:write", "commands"]
+      "bot": ["commands", "files:write", "users:read"]
     }
   },
   "settings": {
