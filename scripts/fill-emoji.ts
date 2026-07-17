@@ -10,6 +10,10 @@ while (true) {
     const name = prompt('name:')
     if (!name) break
 
-    await DB.addEmoji({ creator, name, target_user: user })
+    try {
+      await DB.addEmoji({ creator, name, target_user: user })
+    } catch (e) {
+      console.error(e)
+    }
   }
 }
