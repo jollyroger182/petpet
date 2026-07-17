@@ -8,7 +8,7 @@ CREATE TABLE emojis (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE UNIQUE INDEX uidx_emojis_target_user ON emojis (target_user);
+CREATE INDEX idx_emojis_target_user ON emojis (target_user);
 
 CREATE TABLE emoji_updates (
     id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
